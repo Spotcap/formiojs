@@ -35,7 +35,7 @@ function getOptions(options) {
     submitOnEnter: false,
     iconset: getIconSet((options && options.icons) ? options.icons : Formio.icons),
     i18next,
-    saveDraft: false,
+    saveDraft: true,
     alwaysDirty: false,
     saveDraftThrottle: 5000
   });
@@ -132,8 +132,8 @@ export default class Webform extends NestedDataComponent {
     this._src = '';
     this._loading = false;
     this._form = {};
-    this.draftEnabled = false;
-    this.savingDraft = true;
+    this.draftEnabled = true;
+    this.savingDraft = false;
     if (this.options.saveDraftThrottle) {
       this.triggerSaveDraft = _.throttle(this.saveDraft.bind(this), this.options.saveDraftThrottle);
     }
@@ -787,9 +787,6 @@ export default class Webform extends NestedDataComponent {
    * Saves a submission draft.
    */
   saveDraft() {
-    if (!this.draftEnabled) {
-      return;
-    }
     if (!this.formio) {
       console.warn(this.t('saveDraftInstanceError'));
       return;
